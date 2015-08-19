@@ -28,23 +28,23 @@
 	}
 	var home = {
 		view: function(){
-			return html('home', 'home')
+			return html('home', 'home');
 		}
 	};
 	var login = {
 		view: function(){
-			return html('login', 'login')
+			return html('login', 'login');
 		}
 	};
 	var dashboard = {
 		view: function(){
-			return html('dashboard', 'dashboard')
+			return html('dashboard', 'dashboard');
 		}
 	};
 	var notfound = {
 		view: function(){
 			var message = m.route.param('page') + ' is not found.';
-			return html(message, message)
+			return html(message, message);
 		}
 	};
 	//m.route.mode = "pathname";
