@@ -10,7 +10,7 @@ var error = function(e) {
 
 var paths = {
 	del: 'public/js/*',
-	msx: 'msx/**.msx',
+	msx: 'msx/**.jsx',
 	server: ['views/**', 'routes/**', 'lib/**', 'index.js'],
 	js: 'public/js/'
 };
