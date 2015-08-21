@@ -26,17 +26,19 @@ gulp.task('msx', function() {
 })
 
 // start
+var start;
 gulp.task('start', function(){
-	var start = spawn('node', ['.'])
+	start = spawn('node', ['.'])
 	.on('error', error);
 
 	// log
 	start.on('data', console.log);
-	// stop
-	gulp.task('stop', function(){
-		return start.kill();
-	});
 	return start;
+});
+
+// stop
+gulp.task('stop', function(){
+	return start.kill();
 });
 
 // restart
