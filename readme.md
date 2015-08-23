@@ -1,3 +1,5 @@
+# mithril-getting-started
+
 How to run
 ----------
 
@@ -32,5 +34,4 @@ v0.1.17 on <https://lhorie.github.io/mithril/change-log.html>
 ### comments in jsx
 
 On jsx, HTML style comments <\!-- --> cause compile error. JavaScript style comments /* */ show on a browser. Instead, You must use {/*  */}
-
 
