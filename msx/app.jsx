@@ -101,13 +101,10 @@ var home = {
 	view: function(ctrl){
 		return html('home', 
 			<div>
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				<button type="button" class="btn btn-primary btn-lg" onclick={ctrl.show.bind(ctrl, true)}>
 					Launch demo modal
 				</button>
-				<button type="button" class="btn btn-primary btn-lg" onclick={ctrl.show.bind(ctrl, true)}>
-					Launch demo modal manually
-				</button>
-				<Modal id="myModal" onhidden={ctrl.show.bind(null, false)} visible={ctrl.show()}>
+				<Modal onhidden={ctrl.show.bind(null, false)} visible={ctrl.show()}>
 					<Modal.Header>Header</Modal.Header>
 					<Modal.Body>Body</Modal.Body>
 					<Modal.Footer>
