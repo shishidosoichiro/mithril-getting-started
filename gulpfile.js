@@ -1,6 +1,11 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 var msx = require('gulp-msx');
+var browserify = require('gulp-browserify');
+var source = require('vinyl-source-stream');
+var mithrilify = require('mithrilify');
+var rename = require('gulp-rename');
+
 var del = require('del');
 var spawn = require('child_process').spawn;
 
@@ -10,7 +15,7 @@ var error = function(e) {
 
 var paths = {
 	del: 'public/js/*',
-	msx: 'msx/**.jsx',
+	msx: 'msx/**.js',
 	server: ['views/**', 'routes/**', 'lib/**', 'index.js'],
 	js: 'public/js/'
 };
@@ -23,6 +28,16 @@ gulp.task('msx', function() {
 		.pipe(plumber())
 		.pipe(msx())
 		.pipe(gulp.dest(paths.js))
+})
+
+gulp.task('browserify', function() {
+	gulp.src('msx/app.js')
+	.pipe(plumber())
+  .pipe(browserify({
+    transform: ['mithrilify']
+  }))
+  .pipe(rename('app.js'))
+  .pipe(gulp.dest(paths.js))
 })
 
 // start
