@@ -4,7 +4,7 @@ module.exports = exports = function(title, content){
 			<head>
 				<title>{title} - Mithril sample</title>
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-				<link key="1" rel="stylesheet" href="/css/style.css" />
+				<link rel="stylesheet" href="/css/style.css" />
 			</head>
 			<body>
 				<nav class="navbar navbar-inverse navbar-fixed-top">

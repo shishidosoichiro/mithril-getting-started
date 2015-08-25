@@ -52,11 +52,14 @@ gulp.task('js', function() {
 // start
 var start;
 gulp.task('start', function(){
-	start = spawn('node', ['.'])
-	.on('error', error);
+	start = spawn('node', ['.']);
 
 	// log
-	start.on('data', console.log.bind(console));
+	var log = function(chunk){
+		gutil.log(chunk.toString('utf8'));
+	};
+	start.stdout.on('data', log);
+	start.stderr.on('data', log);
 	return start;
 });
 
