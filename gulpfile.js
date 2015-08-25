@@ -1,10 +1,11 @@
 var gulp = require('gulp');
-var plumber = require('gulp-plumber');
-var msx = require('gulp-msx');
-var browserify = require('gulp-browserify');
-var source = require('vinyl-source-stream');
+
+var gutil = require('gulp-util');
+var notify = require('gulp-notify');
+
+var browserify = require('browserify');
 var mithrilify = require('mithrilify');
-var rename = require('gulp-rename');
+var source = require('vinyl-source-stream');
 
 var del = require('del');
 var spawn = require('child_process').spawn;
@@ -15,6 +16,7 @@ var error = function(e) {
 
 var paths = {
 	del: 'public/js/*',
+	entries: 'msx/app.js',
 	msx: 'msx/**.js',
 	server: ['views/**', 'routes/**', 'lib/**', 'index.js'],
 	js: 'public/js/'
@@ -23,20 +25,27 @@ var paths = {
 // clean.
 gulp.task('clean', del.bind(null, [paths.del]));
 
-gulp.task('msx', function() {
-	return gulp.src(paths.msx)
-		.pipe(plumber())
-		.pipe(msx())
-		.pipe(gulp.dest(paths.js))
-})
+var error = function(){
+	gutil.log(arguments);
 
-gulp.task('browserify', function() {
-	gulp.src('msx/app.js')
-	.pipe(plumber())
-  .pipe(browserify({
-    transform: ['mithrilify']
-  }))
-  .pipe(rename('app.js'))
+	notify.onError({
+		title: "Compile Error",
+		message: "<%= error %>"
+	}).apply(this, arguments);
+
+	this.emit('end');
+}
+
+gulp.task('js', function() {
+	return browserify({
+		entries: paths.entries,
+		debug: true,
+		// defining transforms here will avoid crashing your stream
+		transform: [mithrilify]
+	})
+	.bundle()
+	.on('error', error)
+	.pipe(source('app.js'))
   .pipe(gulp.dest(paths.js))
 })
 
@@ -61,8 +70,8 @@ gulp.task('restart', ['stop', 'start']);
 
 // watch files
 gulp.task('watch', function(){
-	gulp.watch(paths.msx, ['browserify']);
+	gulp.watch(paths.msx, ['js']);
 	gulp.watch(paths.server, ['restart']);
 });
 
-gulp.task('default', ['watch', 'clean', 'browserify', 'start']);
+gulp.task('default', ['watch', 'clean', 'js', 'start']);

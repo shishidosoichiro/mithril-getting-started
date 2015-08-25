@@ -6,7 +6,7 @@ module.exports = exports = function(title, content){
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
 				<link key="1" rel="stylesheet" href="/css/style.css" />
 			</head>
-			<body class="modal-open">
+			<body>
 				<nav class="navbar navbar-inverse navbar-fixed-top">
 					<div class="container">
 						<div class="navbar-header">

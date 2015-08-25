@@ -1,5 +1,5 @@
 var Modal = module.exports = exports = {
-	controller: function(){
+	controller: function(attrs){
 		var visible = m.prop(false);
 		return {
 			visible: visible,
