@@ -1,3 +1,5 @@
+var m = require('mithril');
+
 var Modal = module.exports = exports = {
 	controller: function(attrs){
 		var visible = m.prop(false);
@@ -11,7 +13,10 @@ var Modal = module.exports = exports = {
 		}
 	},
 	view: function(ctrl, attrs, children){
-		ctrl.visible(attrs.visible);
+		attrs = attrs || {};
+		if (attrs.visible) {
+			ctrl.visible(attrs.visible);
+		}
 		return (
 			<div class="modal fade" config={ctrl.toggle} id={attrs.id} tabindex="-1" role="dialog" aria-labelledby={attrs["aria-labelledby"]} onshown={attrs.onshown} onhidden={attrs.onhidden}>
 				<div class="modal-dialog" role="document">

@@ -1,3 +1,5 @@
+var m = require('mithril');
+
 var Home = require('./home');
 var Login = require('./login');
 var Dashboard = require('./dashboard');

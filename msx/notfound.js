@@ -1,3 +1,4 @@
+var m = require('mithril');
 var layout = require('./layout');
 
 module.exports = exports = {

@@ -1,3 +1,5 @@
+var m = require('mithril');
+
 var layout = require('./layout');
 var Modal = require('./bootstrap/modal');
 

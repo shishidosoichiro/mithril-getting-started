@@ -1,3 +1,5 @@
+var m = require('mithril');
+
 module.exports = exports = function(title, content){
 	return (
 		<html>

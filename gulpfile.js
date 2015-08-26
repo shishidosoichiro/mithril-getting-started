@@ -1,13 +1,12 @@
-var gulp = require('gulp');
-
-var gutil = require('gulp-util');
-var notify = require('gulp-notify');
-
 var browserify = require('browserify');
-var mithrilify = require('mithrilify');
-var source = require('vinyl-source-stream');
-
 var del = require('del');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var mocha = require('gulp-mocha');
+var msx = require('gulp-msx');
+var notify = require('gulp-notify');
+var plumber = require('gulp-plumber');
+var source = require('vinyl-source-stream');
 var spawn = require('child_process').spawn;
 
 var error = function(e) {
@@ -15,15 +14,10 @@ var error = function(e) {
 };
 
 var paths = {
-	del: 'public/js/*',
-	entries: 'msx/app.js',
-	msx: 'msx/**.js',
+	entries: 'temp/msx/app.js',
 	server: ['views/**', 'routes/**', 'lib/**', 'index.js'],
 	js: 'public/js/'
 };
-
-// clean.
-gulp.task('clean', del.bind(null, [paths.del]));
 
 var error = function(){
 	gutil.log(arguments);
@@ -36,12 +30,22 @@ var error = function(){
 	this.emit('end');
 }
 
-gulp.task('js', function() {
+// clean.
+gulp.task('clean', del.bind(null, ['public/js/*', 'temp']));
+
+// msx
+gulp.task('msx', ['clean'], function() {
+	return gulp.src(['./msx/**/*.js', './test/**/*.js'], {base: '.'})
+	.pipe(plumber())
+	.pipe(msx())
+	.pipe(gulp.dest('temp/'))
+})
+
+// browserify
+gulp.task('browserify', ['msx'], function() {
 	return browserify({
 		entries: paths.entries,
 		debug: true,
-		// defining transforms here will avoid crashing your stream
-		transform: [mithrilify]
 	})
 	.bundle()
 	.on('error', error)
@@ -49,12 +53,17 @@ gulp.task('js', function() {
   .pipe(gulp.dest(paths.js))
 })
 
+// test
+gulp.task('test', ['msx'], function() {
+	return gulp.src('temp/test/**/*.js', {read: false})
+	.pipe(mocha());
+})
+
 // start
 var start;
 gulp.task('start', function(){
 	start = spawn('node', ['.']);
 
-	// log
 	var log = function(chunk){
 		gutil.log(chunk.toString('utf8'));
 	};
@@ -65,6 +74,7 @@ gulp.task('start', function(){
 
 // stop
 gulp.task('stop', function(){
+	if (!start) return;
 	return start.kill();
 });
 
@@ -73,8 +83,8 @@ gulp.task('restart', ['stop', 'start']);
 
 // watch files
 gulp.task('watch', function(){
-	gulp.watch(paths.msx, ['js']);
+	gulp.watch(['./msx/**/*.js', './test/**/*.js'], ['clean', 'msx', 'test', 'browserify']);
 	gulp.watch(paths.server, ['restart']);
 });
 
-gulp.task('default', ['watch', 'clean', 'js', 'start']);
+gulp.task('default', ['watch', 'clean', 'msx', 'browserify', 'start']);
