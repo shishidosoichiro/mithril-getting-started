@@ -4,7 +4,7 @@ var path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 1000 * 60 * 60 * 24 * 365 }));
 var options = {
-	root: __dirname + '/public/'
+	root: path.join(__dirname, '/public/')
 }
 app.get(/\/.*/, function (req, res) {
   res.sendFile('index.html', options);
