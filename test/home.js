@@ -6,6 +6,7 @@ var m = require('mithril');
 
 describe('Home', function(){
 
+	this.timeout(5000);
 	before(jsdom);
 
 	it('has ...', function(done){
@@ -15,7 +16,7 @@ describe('Home', function(){
 			expect($title.html()).to.equal('home - Mithril sample');
 			done()
 		}
-		var home = (<html config={config}><Home /></html>);
+		var home = <html config={config}><Home /></html>;
 		var html = m.render(document, home);
 	})
 })
